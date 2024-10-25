@@ -33,9 +33,16 @@ jobs:
       - name: Pull Docker Image with Podman
         run: podman pull docker.io/library/alpine:latest
 
-      # Step 4: Scan the Docker image using Trivy (Alpine image)
+      # Step 4: Configure Trivy Token for Rate Limit
+      - name: Set up Trivy Token
+        env:
+          TRIVY_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      # Step 5: Scan the Docker image using Trivy (Alpine image)
       - name: Scan Docker Image with Trivy
+        env:
+          DOCKER_HOST: "unix://$XDG_RUNTIME_DIR/podman/podman.sock"
         run: |
           podman images  # Verify the image exists
-          export DOCKER_HOST=unix://$XDG_RUNTIME_DIR/podman/podman.sock  # Use Podman socket
-          $HOME/bin/trivy image alpine:latest  # Explicit path to Trivy
+          $HOME/bin/trivy image --cache-dir $HOME/.trivycache alpine:latest || \
+          (echo "Rate limit hit, retrying after waiting." && sleep 60 && $HOME/bin/trivy image alpine:latest)
