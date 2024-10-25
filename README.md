@@ -15,6 +15,7 @@ This workflow can be triggered manually via workflow_dispatch.
 Workflow YAML
 yaml
 Copy code
+```
 name: Docker Image Scanning with Podman and Trivy (No-Sudo Environment)
 
 on:
@@ -58,7 +59,7 @@ jobs:
           export DOCKER_HOST=unix://$XDG_RUNTIME_DIR/podman/podman.sock  # Use Podman socket
           trivy image alpine:latest
 
-    ######
+    ```
 Prerequisites
 Podman must be installed on the self-hosted runner. Podman is a rootless container engine, making it ideal for secure, no-sudo environments.
 A self-hosted GitHub Actions runner configured with RedHat or a compatible Linux OS.
