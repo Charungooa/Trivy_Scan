@@ -1,0 +1,42 @@
+name: Docker Image Scanning with Podman and Trivy (No-Sudo Environment)
+
+on:
+  workflow_dispatch:
+
+jobs:
+  scan_image:
+    runs-on: self-hosted
+
+    steps:
+      # Step 1: Check if Podman is installed
+      - name: Check if Podman is installed
+        run: |
+          if command -v podman > /dev/null; then
+            echo "Podman is installed"
+            podman --version
+          else
+            echo "Podman is not installed"
+            exit 1  # Fail the workflow if Podman is not installed
+          fi
+
+      # Step 2: Install Trivy Locally without sudo
+      - name: Install Trivy Locally
+        run: |
+          mkdir -p $HOME/bin
+          export PATH=$PATH:$HOME/bin
+          curl -L https://github.com/aquasecurity/trivy/releases/download/v0.56.1/trivy_0.56.1_Linux-64bit.tar.gz -o trivy.tar.gz
+          tar zxvf trivy.tar.gz
+          mv trivy $HOME/bin/
+          rm trivy.tar.gz
+
+      # Step 3: Pull the Alpine Docker image using Podman
+      - name: Pull Docker Image with Podman
+        run: |
+          podman pull docker.io/library/alpine:latest
+
+      # Step 4: Scan the Docker image using Trivy (Alpine image)
+      - name: Scan Docker Image with Trivy
+        run: |
+          podman images  # Verify the image exists
+          export DOCKER_HOST=unix://$XDG_RUNTIME_DIR/podman/podman.sock  # Use Podman socket
+          trivy image alpine:latest
