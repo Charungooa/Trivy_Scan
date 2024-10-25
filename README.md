@@ -1,4 +1,4 @@
-** Docker Image Scanning with Podman and Trivy (No-Sudo Environment) **
+# Docker Image Scanning with Podman and Trivy (No-Sudo Environment)
 
 This GitHub repository contains a GitHub Actions workflow for scanning Docker images using Trivy with Podman in a rootless (no-sudo) environment. This setup is ideal for environments where sudo access is restricted and Podman is used as a Docker alternative.
 
