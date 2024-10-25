@@ -24,7 +24,6 @@ jobs:
         run: |
           mkdir -p $HOME/bin
           export PATH=$PATH:$HOME/bin
-          echo 'export PATH=$PATH:$HOME/bin' >> $GITHUB_ENV  # Make PATH persistent
           curl -L https://github.com/aquasecurity/trivy/releases/download/v0.56.1/trivy_0.56.1_Linux-64bit.tar.gz -o trivy.tar.gz
           tar zxvf trivy.tar.gz
           mv trivy $HOME/bin/
@@ -32,7 +31,8 @@ jobs:
 
       # Step 3: Pull the Alpine Docker image using Podman
       - name: Pull Docker Image with Podman
-        run: podman pull docker.io/library/alpine:latest
+        run: |
+          podman pull docker.io/library/alpine:latest
 
       # Step 4: Scan the Docker image using Trivy (Alpine image)
       - name: Scan Docker Image with Trivy
