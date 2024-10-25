@@ -11,7 +11,7 @@ Pull a sample Docker image (e.g., alpine:latest) using Podman.
 Scan the Docker image for vulnerabilities using Trivy.
 Workflow Trigger
 This workflow can be triggered manually via workflow_dispatch.
-#####
+
 Workflow YAML
 yaml
 Copy code
@@ -61,10 +61,10 @@ jobs:
 
     ```
 
-**Prerequisites
+Prerequisites
 Podman must be installed on the self-hosted runner. Podman is a rootless container engine, making it ideal for secure, no-sudo environments.
 A self-hosted GitHub Actions runner configured with RedHat or a compatible Linux OS.
-## Steps Explained
+Steps Explained
 Check if Podman is Installed
 The workflow first verifies if Podman is available on the runner. If Podman is not installed, the workflow will exit with an error.
 
